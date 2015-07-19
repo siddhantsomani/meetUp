@@ -47,7 +47,7 @@
     function delete($table, $key, $value) {
       $values = $this->convert($value);
 
-      $query = "DELETE FROM ".$table." WHERE ".$key." IN (".$values")";
+      $query = "DELETE FROM ".$table." WHERE ".$key." IN (".$values.")";
       $result = $this->db->query($query);
       return $result ;
     }
@@ -60,7 +60,7 @@
         $values = $this->convert($value);
         $keys = $this->convert($key);
         $query = "INSERT INTO ".$table." (".$keys.") VALUES(".$values.")";
-        $result = $this->query($query);
+        $result = $this->db->query($query);
       }
       return $result;
     }

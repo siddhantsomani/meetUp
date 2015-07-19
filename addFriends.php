@@ -15,6 +15,5 @@
   $query1 = $GLOBALS['db']->insert("friends",'id1, id2',"'$id1','$id2'");
   $query2 = $GLOBALS['db']->insert("friends",'id1, id2',"'$id2','$id1'");
 
-  $result[] = array('id1' => $query, 'id2' => $query2);//$query1 , $query2;
+  $result = array("id1" => $query1, "id2" => $query2);//$query1 , $query2;
   echo json_encode($result);
-//try output using post through web once
