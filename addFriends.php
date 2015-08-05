@@ -1,6 +1,6 @@
 <?php
   require_once "connect/connect.php";
-  $id1 = $_POST['friendId1']; //Send ids of the friends through post in the App
+  $id1 = $_POST['userId1']; //Send ids of the friends through post in the App
   $id2 = $_POST['friendId2'];
   if($id1==$id2){
     exit;
