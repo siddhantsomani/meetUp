@@ -2,20 +2,27 @@
 
   require_once "connect/connect.php";
 
-  $eventid = $_POST['eventid'];
-  $adminid = $_POST['adminid'];
-  $friendids = $_POST['friends'];//serialized using c# function. PHP Unserialize works same way ?
-  //after $friendids becomes an array :
-  //$friendids[] = $adminid;
-  $status = true;
+  $eventid = intval($_POST['eventid']);
+  $adminid = intval($_POST['adminid']);
+  $friends = $_POST['friends'];
 
-  foreach($friendids as $id){
-    $result = $GLOBALS['db']->query("INSERT INTO eventparticipant values ('$eventid','$id') ");
-    $status = $status and $result;
+  $friendids = array();
+
+  $friendids = explode("a",$friends);
+  $friendids[] = $adminid;
+
+  $status = false;
+  foreach($friendids as $id) {
+	 $id2= intval($id);
+	 if($id2!=0)
+    $result = $GLOBALS['db']->query("INSERT INTO eventparticipant(eventid,friendid) values ('$eventid','$id2') ");
+
+    if($result == true)
+    $status = true;
   }
 
   $json = array('status' => $status );
-  echo json_encode($json);
+  echo json_encode($status);
   $GLOBALS['db']->close();
 
 ?>

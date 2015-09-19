@@ -1,23 +1,33 @@
 <?php
   require_once "connect/connect.php";
-
-  $id = $_POST['userid'];
+  //status 0 implies Already Friends
+  $id = intval($_POST['userid']);
 
   $friendList = array();
+  $friendnames = array();
+  $friendemails = array();
   $nooffriends=0;
-  $result = $GLOBALS['db']->query("SELECT id2 FROM friends WHERE id1=".$id." and status=0");
-  $result1 = $GLOBALS['db']->query("SELECT id1 FROM friends WHERE id2=".$id." and status=0");
+  $result = $GLOBALS['db']->query("SELECT id2,username,emailid FROM friends f,users u WHERE f.id1=".$id." and f.status=0 and f.id2=u.userid");
+  $result1 = $GLOBALS['db']->query("SELECT id1,username,emailid FROM friends f,users u WHERE f.id2=".$id." and f.status=0 and f.id1=u.userid");
   while($row = $result->fetch_assoc()){
     $friendlist[] = $row['id2'];
+    $friendnames[] = $row['username'];
+    $friendemails[] = $row['emailid'];
     $nooffriends++;
   }
-  while($row = $result1->fetch_assoc()){
-    $friendlist[] = $row['id1'];
+  while($row1 = $result1->fetch_assoc()){
+    $friendlist[] = $row1['id1'];
+    $friendnames[] = $row1['username'];
+    $friendemails[] = $row['emailid'];
     $nooffriends++;
   }
 
-  $status = $result and $result1;
-  $json = array('status' => $status,'friendCount' => $nooffriends, 'id' => $friendlist);
+  if($nooffriends>=1)
+    $status = true;
+  else
+    $status = false;
+
+  $json = array('status' => $status,'friendCount' => $nooffriends, 'id' => $friendlist, 'names' => $friendnames, 'email' => $friendemails);
   echo json_encode($json);
   $GLOBALS['db']->close();
 ?>

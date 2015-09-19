@@ -12,7 +12,11 @@
   $extraNotice = $_POST['extranotice'];
 
   $result = $GLOBALS['db']->query("INSERT INTO events (eventtype,adminid,name,eventdate,eventtime,place,budget,people,extranotice) VALUES ('$eventtype','$adminid','$name','$eventdate','$eventtime','$place','$budget','$people','$extraNotice')");
-  $json = array('status' => $result );
+  $result = $GLOBALS['db']->query("SELECT max(id) as id FROM events");
+  $temp = $result->fetch_assoc();
+  $id = $temp['id'];
+
+  $json = array('eventid' => intval($id));
   echo json_encode($json);
   $GLOBALS['db']->close();
  ?>
